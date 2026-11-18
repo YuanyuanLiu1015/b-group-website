@@ -86,12 +86,7 @@
     add('home_open'); sync(false,true);
   }
   function logClick(which) { if(which !== 'info1' && which !== 'info2') return;add('click',{info:which});sync(false,true); }
-  function logSearch(query, category, source) {
-    const allowed = ['info1','info2','both','unmatched'];
-    if (!allowed.includes(category)) return;
-    add('search', { query: String(query || '').slice(0,300), category, source: String(source || 'free_text').slice(0,40) });
-    sync(false,true);
-  }
+  function logSearch(query, category, source) { if(typeof query !== 'string' || !['info1','info2'].includes(category)) return; add('search',{query:query.slice(0,200),category,source:source||'unknown'}); sync(false,true); }
   function startView(which) {
     if(which!=='info1'&&which!=='info2')return;
     appendRidToInternalLinks();
