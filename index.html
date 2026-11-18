@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="羊肉产品信息自主了解页面">
+  <title>羊肉产品信息了解｜消费者调查</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">羊</span><span>羊肉产品信息中心<small>LAMB PRODUCT INFORMATION</small></span></a>
+  <span class="header-note">消费者调查 · 信息了解环节</span>
+</header>
+<main class="container">
+  <p id="status-message" class="status-message" hidden></p>
+  <section class="intro">
+    <p class="eyebrow">PRODUCT INFORMATION</p>
+    <h1>了解羊肉产品的相关信息</h1>
+    <p>在进行后续选择之前，您可以自主了解以下两类背景信息。点击相应模块即可查看详细介绍。您可以选择查看其中一类、两类，也可以不查看。</p>
+  </section>
+  <section class="cards" aria-label="可自主选择的信息">
+    <article class="info-card">
+      <div class="card-image image-agrivoltaic" role="img" aria-label="羊群在太阳能光伏板下方的草地上活动"><span>INFORMATION 01</span><span class="image-caption">光伏场区放牧场景</span></div>
+      <div class="card-body">
+        <p class="card-kicker">PRODUCTION SYSTEM</p><h2>羊肉养殖方式</h2>
+        <p>了解舍饲圈养、传统草地放牧和光伏场区放牧三种养殖方式的基本特点及差异。</p>
+        <div class="card-meta"><span>养殖方式介绍</span><span>自主选择查看</span></div>
+        <a class="button button-blue" href="info1.html" data-open="info1">查看养殖方式信息 <b>→</b></a>
+      </div>
+    </article>
+    <article class="info-card">
+      <div class="card-image image-greenfood" role="img" aria-label="羊群在绿色牧场活动的实景照片"><span>INFORMATION 02</span><span class="image-caption">绿色生产与质量认证</span></div>
+      <div class="card-body">
+        <p class="card-kicker">GREEN FOOD CERTIFICATION</p><h2>绿色食品标志</h2>
+        <p>了解绿色食品标志的基本含义、认证要求，以及A级和AA级绿色食品的区别。</p>
+        <div class="card-meta"><span>认证标志介绍</span><span>自主选择查看</span></div>
+        <a class="button button-green" href="info2.html" data-open="info2">查看绿色食品信息 <b>→</b></a>
+      </div>
+    </article>
+  </section>
+  <aside class="notice"><span class="notice-icon">i</span><p>是否查看以上信息由您自主决定。系统将记录信息页面的有效停留时间，但不会强制您阅读或等待。无论是否查看，均可继续完成问卷。</p></aside>
+  <div class="actions"><a class="text-link" href="finish.html">暂不查看，继续问卷 <span>→</span></a></div>
+  <p class="photo-credit">场景照片来源：<a href="https://www.pexels.com/photo/a-flock-of-sheep-in-a-solar-farm-9684128/" target="_blank" rel="noopener">Pexels · Vincent Delsuc</a>；<a href="https://unsplash.com/photos/a-flock-of-sheep-grazing-in-a-green-pasture-uGGQrsXORNc" target="_blank" rel="noopener">Unsplash · Laurenz Kruty</a>。照片用于说明场景，不代表特定调查产品。</p>
+</main>
+<footer>消费者调查 · 信息仅用于本研究</footer>
+<script src="js/config.js"></script><script src="js/tracking.js"></script>
+<script>window.BGroup.init();document.querySelectorAll('[data-open]').forEach(a=>a.addEventListener('click',()=>window.BGroup.logClick(a.dataset.open)));</script>
+</body></html>
