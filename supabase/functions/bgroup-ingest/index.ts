@@ -14,7 +14,7 @@ const headers = (origin: string) => ({
 const reply = (body: unknown, status: number, origin: string) => new Response(JSON.stringify(body), { status, headers:headers(origin) });
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const ridRE = /^[A-Za-z0-9_-]{6,100}$/;
-const acceptable = new Set(['home_open','click','view_start','view_end','experiment_complete']);
+const acceptable = new Set(['home_open','search','click','view_start','view_end','experiment_complete']);
 
 Deno.serve(async (req) => {
   const origin=req.headers.get('origin') ?? '';
@@ -42,7 +42,10 @@ Deno.serve(async (req) => {
     if(['click','view_start','view_end'].includes(e.type)&&!info)return reply({error:'Missing info'},400,origin);
     const duration=e.type==='view_end'?e.duration_seconds:null;
     if(duration!==null&&(!Number.isInteger(duration)||duration<0||duration>3600))return reply({error:'Invalid duration'},400,origin);
-    rows.push({event_id:e.event_id,rid,visit_id,event_type:e.type,info,event_at:e.at,duration_seconds:duration,bottom:e.type==='view_end'?e.bottom===true:null,max_scroll:e.type==='view_end'?Math.max(0,Math.min(1,Number(e.max_scroll)||0)):null});
+    const searchQuery=e.type==='search'?e.query:null;
+    const searchSource=e.type==='search'?e.source:null;
+    if(e.type==='search' && (!info || typeof searchQuery!=='string' || searchQuery.length<1 || searchQuery.length>200 || !['home_search'].includes(searchSource)))return reply({error:'Invalid search event'},400,origin);
+    rows.push({event_id:e.event_id,rid,visit_id,event_type:e.type,info,event_at:e.at,duration_seconds:duration,bottom:e.type==='view_end'?e.bottom===true:null,max_scroll:e.type==='view_end'?Math.max(0,Math.min(1,Number(e.max_scroll)||0)):null,search_query:searchQuery,search_source:searchSource});
   }
   const supabaseUrl=Deno.env.get('SUPABASE_URL');
   const secret=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');

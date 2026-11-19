@@ -9,6 +9,8 @@ create table if not exists public.bgroup_events (
   duration_seconds integer,
   bottom boolean,
   max_scroll numeric,
+  search_query text,
+  search_source text,
   received_at timestamptz not null default now()
 );
 create index if not exists bgroup_events_visit on public.bgroup_events(rid, visit_id, received_at);
@@ -38,3 +40,7 @@ alter table public.bgroup_sessions enable row level security;
 revoke all on public.bgroup_events from anon, authenticated;
 revoke all on public.bgroup_sessions from anon, authenticated;
 -- Service-role key is accessible ONLY inside the Edge Function.
+
+-- Upgrade existing V6 projects safely: add search metadata columns if absent.
+alter table public.bgroup_events add column if not exists search_query text;
+alter table public.bgroup_events add column if not exists search_source text;
