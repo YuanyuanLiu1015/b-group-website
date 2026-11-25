@@ -40,7 +40,7 @@
     if (!rid) throw new Error('缺少有效的受访者编号 rid。请从Qualtrics专用链接进入。');
     if (!C.demoMode) {
       if (!/^https:\/\/[A-Za-z0-9.-]+\.supabase\.co\/functions\/v1\/bgroup-ingest$/.test(C.apiUrl || '')) throw new Error('未配置正确的Supabase Edge Function地址。');
-      if (!/^https:\/\/[A-Za-z0-9.-]+\.qualtrics\.com\/jfe\/form\/SV_[A-Za-z0-9]+/.test(C.surveyReturnUrl||'')) throw new Error('请配置Qualtrics第二份问卷的正式链接。');
+      if (!C.testMode && !/^https:\/\/[A-Za-z0-9.-]+\.qualtrics\.com\/jfe\/form\/SV_[A-Za-z0-9]+/.test(C.surveyReturnUrl||'')) throw new Error('请配置Qualtrics第二份问卷的正式链接。');
     }
   }
   async function sync(finalize = false, silent = false) {
@@ -116,18 +116,19 @@
     button.textContent='正在保存访问记录…';
     const demo=document.getElementById('demo-note');
     if(demo && C.demoMode)demo.textContent='演示模式：记录仅存于本浏览器，不会上传研究数据库。';
+    if(demo && C.testMode)demo.textContent='联调模式：本次测试数据会真实保存到 Supabase。请勿使用真实受访者信息。';
     async function finalize() {
       if(busy)return;busy=true;button.disabled=true;button.textContent='正在保存访问记录…';
       try {
         validateSetup();
         if(!state.completed || !state.result) {add('experiment_complete');await sync(true);}
-        button.disabled=false;button.textContent=C.demoMode?'查看演示结果':'继续Qualtrics问卷 →';
+        button.disabled=false;button.textContent=C.testMode?'查看数据库保存结果':(C.demoMode?'查看演示结果':'继续Qualtrics问卷 →');
       }catch(e){button.disabled=false;button.textContent='重新尝试保存';errorBox('未能保存访问记录，请检查网络后重试。'+e.message);}
       finally{busy=false;}
     }
     button.addEventListener('click',async()=>{
       if(!state.completed){await finalize();return;}
-      if(C.demoMode){alert('演示结果：'+JSON.stringify(state.result,null,2));return;}
+      if(C.demoMode || C.testMode){alert((C.testMode?'Supabase 已保存结果：':'演示结果：')+JSON.stringify(state.result,null,2));return;}
       const u=new URL(C.surveyReturnUrl);
       const r=state.result;
       const values={rid:r.rid,bgroup:r.group_type,info1_viewed:String(Number(r.info1_viewed)),info2_viewed:String(Number(r.info2_viewed)),info1_seconds:String(r.info1_duration),info2_seconds:String(r.info2_duration),bgroup_status:'complete'};

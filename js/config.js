@@ -1,9 +1,10 @@
-/* 本地预览默认开启演示模式。正式部署时，按 README 配置 API 与 Qualtrics 第二份问卷链接。 */
+/* V8 Supabase 联调：真实写入数据库；暂不连接Qualtrics。正式调查前须调整为正式版本。 */
 window.BGROUP_CONFIG = {
-  demoMode: true,
-  apiUrl: '',
+  demoMode: false,
+  testMode: true,
+  apiUrl: 'https://lrwgtvwbcwrhyytivrqk.supabase.co/functions/v1/bgroup-ingest',
   surveyReturnUrl: '',
-  minViewSeconds: 1,       // 有效查看的暂定阈值：可见页面累计停留不少于15秒
-  requireBottomScroll: false, // 不强制滚动到页面底部
+  minViewSeconds: 1,
+  requireBottomScroll: false,
   requestTimeoutMs: 15000
 };
