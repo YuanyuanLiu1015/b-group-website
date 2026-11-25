@@ -64,3 +64,5 @@
  .search-submit-row .button,.skip-panel .button{width:100%;text-align:center;justify-content:center}
  .category-prompts>h2{font-size:21px}
 }
+
+.test-banner{margin:24px 0 -20px;border:1px solid #ead9a4;border-radius:10px;padding:10px 15px;background:#fff9e7;color:#785b24;font-size:13px}
